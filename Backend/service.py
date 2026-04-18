@@ -25,10 +25,16 @@ class MovementRequest(BaseModel):
     # removes all the valid characters, anything remains -> invalid
     remaining = re.sub(r"[A-Za-z0-9]","",clean_id)
     if remaining:
-      if remaining.contains(" "):
-        raise ValueError("Input product_id contains invalid empty spaces")
-      else:
-        raise ValueError(f"Invalid characters found: {remaining}")
+      special_characters = re.sub(r" ","",remaining)
+      if " " in remaining:
+        if special_charcters:
+          raise ValueError(f"Your input product_id contains invalid special characters {sc for sc in special_characters} and empty space(s)")
+        else:
+          raise ValueError("Your input product_id contains invalid empty space(s)")
+       raise ValueError("Your input product_id contains invalid special characters {sc for sc in special_characters}")
+
+     
+        
       
         
 
