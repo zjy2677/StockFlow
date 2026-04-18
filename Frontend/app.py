@@ -1,10 +1,13 @@
 from __future__ import annotations
+
 import os
+
 import requests
 import streamlit as st
 from dotenv import load_dotenv
 
 load_dotenv()
+
 
 def get_backend_url() -> str:
     """Resolve backend url from Streamlit secrets or environment."""
@@ -28,27 +31,52 @@ if "127.0.0.1" in BACKEND_URL or "localhost" in BACKEND_URL:
         "variables to your deployed FastAPI URL."
     )
 
-st.subheader("Register movement")
-with st.form("movement_form"):
-    movement_product_id = st.text_input("Product ID", placeholder="ABC123")
-    movement_quantity = st.number_input("Quantity", min_value=0, step=1, value=0)
-    movement_type = st.selectbox("Type", options=["in", "out"])
-    submit_movement = st.form_submit_button("Submit movement")
+left_col, right_col = st.columns(2)
 
-if submit_movement:
-    payload = {
-        "product_id": movement_product_id,
-        "quantity": int(movement_quantity),
-        "type": movement_type,
-    }
-    try:
-        response = requests.post(f"{BACKEND_URL}/movements", json=payload, timeout=10)
-        data = response.json()
-        if response.ok:
-            st.success(
-                f"Movement saved for {data['product_id']}. Current stock: {data['current_stock']}"
+with left_col:
+    st.subheader("Register movement")
+    with st.form("movement_form"):
+        movement_product_id = st.text_input("Product ID", placeholder="ABC123")
+        movement_quantity = st.number_input("Quantity", min_value=0, step=1, value=0)
+        movement_type = st.selectbox("Type", options=["in", "out"])
+        submit_movement = st.form_submit_button("Submit movement")
+
+    if submit_movement:
+        payload = {
+            "product_id": movement_product_id,
+            "quantity": int(movement_quantity),
+            "type": movement_type,
+        }
+        try:
+            response = requests.post(f"{BACKEND_URL}/movements", json=payload, timeout=10)
+            data = response.json()
+            if response.ok:
+                st.success(
+                    f"Movement saved for {data['product_id']}. Current stock: {data['current_stock']}"
+                )
+            else:
+                st.error(data.get("detail", "Failed to register movement"))
+        except requests.RequestException as exc:
+            st.error(f"Could not connect to backend: {exc}")
+
+with right_col:
+    st.subheader("Check inventory")
+    with st.form("inventory_form"):
+        stock_product_id = st.text_input("Product ID to check", placeholder="ABC123")
+        check_inventory = st.form_submit_button("Check stock")
+
+    if check_inventory:
+        try:
+            response = requests.get(
+                f"{BACKEND_URL}/products/{stock_product_id}/stock",
+                timeout=10,
             )
-        else:
-            st.error(data.get("detail", "Failed to register movement"))
-    except requests.RequestException as exc:
-        st.error(f"Could not connect to backend: {exc}")
+            data = response.json()
+            if response.ok:
+                st.success(
+                    f"Current stock for {data['product_id']}: {data['current_stock']}"
+                )
+            else:
+                st.error(data.get("detail", "Failed to retrieve stock"))
+        except requests.RequestException as exc:
+            st.error(f"Could not connect to backend: {exc}")
