@@ -18,7 +18,7 @@ def id_value_checker(value: str) -> str:
     if remaining:
         special_characters = re.sub(r" ","",remaining)
         if " " in remaining:
-            if special_charcters:
+            if special_characters:
                 raise ValueError(f"Your input product_id contains invalid special characters {set(special_characters)} and empty space(s)")
             else:
                 raise ValueError("Your input product_id contains invalid empty space(s)")
