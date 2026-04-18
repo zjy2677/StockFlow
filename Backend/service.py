@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Dict
 from fastapi import HTTPException
 from pydantic import BaseModel, Field, field_validator
+import re 
 
 class MovementRequest(BaseModel):
   # No default set to product_id but it has to conatin at least 1 character
@@ -28,19 +29,21 @@ class MovementRequest(BaseModel):
       special_characters = re.sub(r" ","",remaining)
       if " " in remaining:
         if special_charcters:
-          raise ValueError(f"Your input product_id contains invalid special characters {sc for sc in special_characters} and empty space(s)")
+          raise ValueError(f"Your input product_id contains invalid special characters {set(special_characters)} and empty space(s)")
         else:
           raise ValueError("Your input product_id contains invalid empty space(s)")
-       raise ValueError("Your input product_id contains invalid special characters {sc for sc in special_characters}")
-
-     
-        
-      
-        
-
-
+       raise ValueError("Your input product_id contains invalid special characters {set(special_characters)")
     return clean_id
 
-
+  # frontend will make sure user can only select "in" or "out" but validation is also need for security reasons? 
+  @field_validator("type")
+  @classmethod
+  def validate_type(cls, value: str) -> str:
+    # check if type is in "in" or "out"
+    normalized = value.strip().lower()
+    if normalized not in {"in","out"}:
+      raise ValueError("type must be either 'in; or 'out'")\
+    return normalized
+  
 
 
