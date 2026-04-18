@@ -7,7 +7,7 @@ from fastapi import HTTPException
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
-from Backend.service import MovementRequest, stock_service
+from Backend.service import MovementRequest, service
 
 
 st.set_page_config(page_title="StockFlow Demo", page_icon="📦", layout="centered")
@@ -33,7 +33,7 @@ with left_col:
                 quantity=int(movement_quantity),
                 type=movement_type,
             )
-            result = stock_service.register_movement(movement)
+            result = service.register_movement(movement)
             st.success(
                 f"Movement saved for {result.product_id}. Current stock: {result.current_stock}"
             )
@@ -53,7 +53,7 @@ with right_col:
 
     if check_inventory:
         try:
-            result = stock_service.get_stock(stock_product_id)
+            result = service.get_stock(stock_product_id)
             st.success(
                 f"Current stock for {result.product_id}: {result.current_stock}"
             )
