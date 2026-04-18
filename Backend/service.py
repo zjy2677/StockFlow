@@ -81,13 +81,13 @@ class StockService:
       return MovementResponse(
         message = "This in-stock movement has been registered in the database successfully",
         product_id = product_id,
-        current_stock = current_stock
+        current_stock = current_stock,
       )
       
       if product_id not in self._stock:
         raise HTTPException(
           status_code = 404,
-          detail = "This product was never registered in the database"
+          detail = "This product was never registered in the database",
         )
         
       current_stock = self._stock[product_id]
@@ -95,17 +95,28 @@ class StockService:
       if current_stock < 0:
         raise HTTPException(
           status_code=400,
-          detail="Negative stock after this operation, insufficient stock for this movement"
+          detail="Negative stock after this operation, insufficient stock for this movement",
         )
 
        self._stock[product_id] = current_stock
       return MovementResponse(
         message="This out-stock movement has been registered in the database successfully",
         product_id = product_id,
-        current_stock = current_stock
+        current_stock = current_stock,
       )
       
   def get_stock(self, product_id: str) -> StockResponse:
+     clean_id = id_value_checker(product_id)
+     if clean_id not in self._stock:
+        raise HTTPException(
+           status_code = 404,
+           detail = "Product with this id was never registered in the database",
+        )
+     return StockResponse(product_id=clean_id, current_stock=self._stock[clean_id])
+
+
+
+
     
   
 
