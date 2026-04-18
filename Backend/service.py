@@ -57,7 +57,57 @@ class StockResponse(BaseModel):
   product_id: str
   current_stock: int
 
+# This is where backend logic lives
+class StockService:
+  def __init__(self) -> None:
+    # initiate a private run-time dic to store product_id and corresponding inventory 
+    self._stock: Dict[str,int]={}
 
+  def register_movement(self, movement: MovementRequest) -> MovementResponse:
+    product_id = movement.product_id
+    quantity = movement.quantity
+    if movement.type = "in":
+      # get current stock if exists else default 0
+      current_stock = self._stock.get(product_id, 0)
+      # update current stock with quantity 
+      current_stock += quantity
+      # update current stock in dic
+      self._stock[product_id] = current_stock      
+      return MovementResponse(
+        message = "This in-stock movement has been registered in the database successfully",
+        product_id = product_id,
+        current_stock = current_stock
+      )
+      
+      if product_id not in self._stock:
+        raise HTTPException(
+          status_code = 404,
+          detail = "This product was never registered in the database"
+        )
+        
+      current_stock = self._stock[product_id]
+      current_stock -= quantity 
+      if current_stock < 0:
+        raise HTTPException(
+          status_code=400,
+          detail="Negative stock after this operation, insufficient stock for this movement"
+        )
+
+       self._stock[product_id] = current_stock
+      return MovementResponse(
+        message="This out-stock movement has been registered in the database successfully",
+        product_id = product_id,
+        current_stock = current_stock
+      )
+
+
+        
+
+   
+      
+
+
+    
 
   
   
