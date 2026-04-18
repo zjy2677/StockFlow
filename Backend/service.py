@@ -6,21 +6,7 @@ import re
 
 # define a global value checker
 def value_checker(value: str) -> str:
-
-# This will later be used by POST method
-class MovementRequest(BaseModel):
-  # No default set to product_id but it has to conatin at least 1 character
-  product_id = Field(...,min_length=1)
-  # No default set to quantity but it has to be greater than or equal to 0
-  quantity = Field(...,ge=0)
-  # "type" is either in/out defined as string 
-  type: str
-
-  # Validator for the product_id
-  @field_validator("product_id")
-  @classmethod
-  def validate_product_id(cls, value: str) -> str:
-    # cleans spaces in the front and at the end
+   # cleans spaces in the front and at the end
     clean_id = value.strip()
     
     # make sure that product_id is not empty 
@@ -38,6 +24,22 @@ class MovementRequest(BaseModel):
           raise ValueError("Your input product_id contains invalid empty space(s)")
        raise ValueError("Your input product_id contains invalid special characters {set(special_characters)")
     return clean_id
+
+# This will later be used by POST method
+class MovementRequest(BaseModel):
+  # No default set to product_id but it has to conatin at least 1 character
+  product_id = Field(...,min_length=1)
+  # No default set to quantity but it has to be greater than or equal to 0
+  quantity = Field(...,ge=0)
+  # "type" is either in/out defined as string 
+  type: str
+
+  # Validator for the product_id
+  @field_validator("product_id")
+  @classmethod
+  def validate_product_id(cls, value: str) -> str:
+    return value_checker(value)
+   
 
   # frontend will make sure user can only select "in" or "out" but validation is also need for security reasons? 
   @field_validator("type")
