@@ -4,6 +4,9 @@ from fastapi import HTTPException
 from pydantic import BaseModel, Field, field_validator
 import re 
 
+# define a global value checker
+def value_checker(value: str) -> str:
+
 # This will later be used by POST method
 class MovementRequest(BaseModel):
   # No default set to product_id but it has to conatin at least 1 character
@@ -99,6 +102,10 @@ class StockService:
         product_id = product_id,
         current_stock = current_stock
       )
+      
+  def get_stock(self, product_id: str) -> StockResponse:
+    
+  
 
 
         
