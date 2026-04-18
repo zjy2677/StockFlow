@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-from typing import Any
 
 import requests
 import streamlit as st
@@ -75,26 +74,15 @@ BACKEND_URL = get_backend_url().rstrip("/")
 
 st.set_page_config(page_title="StockFlow Demo", page_icon="📦", layout="centered")
 st.title("📦 StockFlow")
-st.caption("Stock management demo with FastAPI + Streamlit")
+st.caption("Minimal stock management demo with FastAPI + Streamlit")
 
-st.subheader("Connection mode")
-local_mode = st.toggle(
-    "Run in frontend-only mode (no backend required)",
-    value=False,
-    help="Enable this when your Streamlit frontend cannot reach the backend yet.",
-)
-
-if local_mode:
-    init_local_inventory()
-    st.info("Frontend-only mode is ON. Data is stored temporarily in this browser session.")
-else:
-    st.info(f"Using backend API: `{BACKEND_URL}`")
-    if "127.0.0.1" in BACKEND_URL or "localhost" in BACKEND_URL:
-        st.warning(
-            "Your backend URL currently points to localhost. On Streamlit Community Cloud, "
-            "localhost points to the Streamlit container itself, not your FastAPI app. "
-            "Set BACKEND_URL in Streamlit Secrets to your deployed backend URL."
-        )
+st.info(f"Using backend API: `{BACKEND_URL}`")
+if "127.0.0.1" in BACKEND_URL or "localhost" in BACKEND_URL:
+    st.warning(
+        "If you deploy on Streamlit Community Cloud, localhost points to the Streamlit "
+        "container itself. Configure BACKEND_URL in Streamlit Secrets or environment "
+        "variables to your deployed FastAPI URL."
+    )
 
 left_col, right_col = st.columns(2)
 
@@ -112,34 +100,17 @@ with left_col:
             "quantity": int(movement_quantity),
             "type": movement_type,
         }
-
-        if local_mode:
-            success, message = register_local_movement(
-                movement_product_id,
-                int(movement_quantity),
-                movement_type,
-            )
-            if success:
-                st.success(message)
-            else:
-                st.error(message)
-        else:
-            try:
-                response = requests.post(f"{BACKEND_URL}/movements", json=payload, timeout=10)
-                if response.ok:
-                    data = response.json()
-                    st.success(
-                        f"Movement saved for {data['product_id']}. "
-                        f"Current stock: {data['current_stock']}"
-                    )
-                else:
-                    st.error(extract_error_message(response, "Failed to register movement"))
-            except requests.RequestException as exc:
-                st.error(
-                    "Could not connect to backend. "
-                    "Verify BACKEND_URL and CORS settings on your API. "
-                    f"Details: {exc}"
+        try:
+            response = requests.post(f"{BACKEND_URL}/movements", json=payload, timeout=10)
+            data = response.json()
+            if response.ok:
+                st.success(
+                    f"Movement saved for {data['product_id']}. Current stock: {data['current_stock']}"
                 )
+            else:
+                st.error(data.get("detail", "Failed to register movement"))
+        except requests.RequestException as exc:
+            st.error(f"Could not connect to backend: {exc}")
 
 with right_col:
     st.subheader("Check inventory")
@@ -148,28 +119,17 @@ with right_col:
         check_inventory = st.form_submit_button("Check stock")
 
     if check_inventory:
-        if local_mode:
-            success, message = get_local_stock(stock_product_id)
-            if success:
-                st.success(message)
+        try:
+            response = requests.get(
+                f"{BACKEND_URL}/products/{stock_product_id}/stock",
+                timeout=10,
+            )
+            data = response.json()
+            if response.ok:
+                st.success(
+                    f"Current stock for {data['product_id']}: {data['current_stock']}"
+                )
             else:
-                st.error(message)
-        else:
-            try:
-                response = requests.get(
-                    f"{BACKEND_URL}/products/{stock_product_id}/stock",
-                    timeout=10,
-                )
-                if response.ok:
-                    data = response.json()
-                    st.success(
-                        f"Current stock for {data['product_id']}: {data['current_stock']}"
-                    )
-                else:
-                    st.error(extract_error_message(response, "Failed to retrieve stock"))
-            except requests.RequestException as exc:
-                st.error(
-                    "Could not connect to backend. "
-                    "Verify BACKEND_URL and CORS settings on your API. "
-                    f"Details: {exc}"
-                )
+                st.error(data.get("detail", "Failed to retrieve stock"))
+        except requests.RequestException as exc:
+            st.error(f"Could not connect to backend: {exc}")
