@@ -28,9 +28,9 @@ def id_value_checker(value: str) -> str:
 # This will later be used by POST method
 class MovementRequest(BaseModel):
     # No default set to product_id but it has to conatin at least 1 character
-    product_id = Field(...,min_length=1)
+    product_id: str = Field(...,min_length=1)
     # No default set to quantity but it has to be greater than or equal to 0
-    quantity = Field(...,ge=0)
+    quantity: int = Field(...,ge=0)
     # "type" is either in/out defined as string 
     type: str
 
