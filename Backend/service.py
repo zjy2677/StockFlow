@@ -4,6 +4,7 @@ from fastapi import HTTPException
 from pydantic import BaseModel, Field, field_validator
 import re 
 
+# This will later be used by POST method
 class MovementRequest(BaseModel):
   # No default set to product_id but it has to conatin at least 1 character
   product_id = Field(...,min_length=1)
@@ -44,6 +45,19 @@ class MovementRequest(BaseModel):
     if normalized not in {"in","out"}:
       raise ValueError("type must be either 'in; or 'out'")\
     return normalized
+      
+# This is for structuring a response
+class MovementResponse(BaseModel):
+  message: str
+  product_id: str
+  current_stock: int 
+
+# This will later be used by GET method
+class StockResponse(BaseModel):
+  product_id: str
+  current_stock: int
+
+
+
   
-
-
+  
