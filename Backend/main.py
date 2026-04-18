@@ -4,14 +4,11 @@ from Backend.service import(
     MovementRequest,
     MovementResponse,
     StockResponse,
-    StockService,
+    service,
 )
 
 # create a fastapi object app with tile and version
 app = FastAPI(title="StockFlow API", version="1.0.0")
-
-# create a StockService obkect
-service = StockService()
 
 # Endpoint 1
 @app.post("/movements", response_model=MovementResponse, status_code=201)
