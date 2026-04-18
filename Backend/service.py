@@ -71,7 +71,7 @@ class StockService:
     def register_movement(self, movement: MovementRequest) -> MovementResponse:
         product_id = movement.product_id
         quantity = movement.quantity
-        if movement.type = "in":
+        if movement.type == "in":
             # get current stock if exists else default 0
             current_stock = self._stock.get(product_id, 0)
             # update current stock with quantity 
