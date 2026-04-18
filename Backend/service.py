@@ -106,10 +106,18 @@ class StockService:
         )
       
     def get_stock(self, product_id: str) -> StockResponse:
-        clean_id = id_value_checker(product_id)
+        try:
+             clean_id = id_value_checker(product_id)
+        except ValueError as e:
+            raise HTTPException(
+                status_code=422,
+                detail=str(e),
+            )
         if clean_id not in self._stock:
             raise HTTPException(
-                status_code = 404,
-                detail = "Product with this id was never registered in the database",
+                status_code=404,
+                detail= "Product with this product_id was never registered in the database",
             )
         return StockResponse(product_id=clean_id, current_stock=self._stock[clean_id])
+        
+        
