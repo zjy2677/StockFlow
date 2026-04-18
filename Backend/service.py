@@ -5,7 +5,7 @@ from pydantic import BaseModel, Field, field_validator
 import re 
 
 # define a global value checker
-def value_checker(value: str) -> str:
+def id_value_checker(value: str) -> str:
    # cleans spaces in the front and at the end
     clean_id = value.strip()
     
@@ -38,7 +38,7 @@ class MovementRequest(BaseModel):
   @field_validator("product_id")
   @classmethod
   def validate_product_id(cls, value: str) -> str:
-    return value_checker(value)
+    return id_value_checker(value)
    
 
   # frontend will make sure user can only select "in" or "out" but validation is also need for security reasons? 
