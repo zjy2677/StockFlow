@@ -15,9 +15,24 @@ class MovementRequest(BaseModel):
   @field_validator("product_id")
   @classmethod
   def validate_product_id(cls, value: str) -> str:
+    # cleans spaces in the front and at the end
     clean_id = value.strip()
+    
+    # make sure that product_id is not empty 
     if not clean_id:
       raise ValueError("product_id must be a non-empty string")
+      
+    # removes all the valid characters, anything remains -> invalid
+    remaining = re.sub(r"[A-Za-z0-9]","",clean_id)
+    if remaining:
+      if remaining.contains(" "):
+        raise ValueError("Input product_id contains invalid empty spaces")
+      else:
+        raise ValueError(f"Invalid characters found: {remaining}")
+      
+        
+
+
     return clean_id
 
 
