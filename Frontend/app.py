@@ -10,11 +10,64 @@ load_dotenv()
 
 
 def get_backend_url() -> str:
-    """Resolve backend url from Streamlit secrets or environment."""
+    """Resolve backend URL from Streamlit secrets or environment."""
     secrets_url = st.secrets.get("BACKEND_URL", "").strip() if st.secrets else ""
     env_url = os.getenv("BACKEND_URL", "").strip()
     fallback_url = "http://127.0.0.1:8000"
     return secrets_url or env_url or fallback_url
+
+
+def extract_error_message(response: requests.Response, fallback: str) -> str:
+    """Get a user-friendly API error message."""
+    try:
+        data: dict[str, Any] = response.json()
+        detail = data.get("detail", fallback)
+        if isinstance(detail, list):
+            return "; ".join(str(item) for item in detail)
+        return str(detail)
+    except ValueError:
+        return fallback
+
+
+def init_local_inventory() -> None:
+    """Initialize local in-memory inventory for frontend-only mode."""
+    if "local_inventory" not in st.session_state:
+        st.session_state.local_inventory = {}
+
+
+def register_local_movement(product_id: str, quantity: int, movement_type: str) -> tuple[bool, str]:
+    """Register stock movement in local session state."""
+    clean_id = product_id.strip()
+    if not clean_id:
+        return False, "Product ID must not be empty."
+
+    inventory = st.session_state.local_inventory
+    current_stock = int(inventory.get(clean_id, 0))
+
+    if movement_type == "in":
+        current_stock += quantity
+    else:
+        if clean_id not in inventory:
+            return False, "Product does not exist in local inventory."
+        current_stock -= quantity
+        if current_stock < 0:
+            return False, "Insufficient stock for this movement."
+
+    inventory[clean_id] = current_stock
+    return True, f"Movement saved for {clean_id}. Current stock: {current_stock}"
+
+
+def get_local_stock(product_id: str) -> tuple[bool, str]:
+    """Get stock from local session state inventory."""
+    clean_id = product_id.strip()
+    if not clean_id:
+        return False, "Product ID must not be empty."
+
+    inventory = st.session_state.local_inventory
+    if clean_id not in inventory:
+        return False, "Product does not exist in local inventory."
+
+    return True, f"Current stock for {clean_id}: {inventory[clean_id]}"
 
 
 BACKEND_URL = get_backend_url().rstrip("/")
