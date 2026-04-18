@@ -22,7 +22,7 @@ def id_value_checker(value: str) -> str:
           raise ValueError(f"Your input product_id contains invalid special characters {set(special_characters)} and empty space(s)")
         else:
           raise ValueError("Your input product_id contains invalid empty space(s)")
-       raise ValueError("Your input product_id contains invalid special characters {set(special_characters)")
+       raise ValueError(f"Your input product_id contains invalid special characters {set(special_characters)}")
     return clean_id
 
 # This will later be used by POST method
