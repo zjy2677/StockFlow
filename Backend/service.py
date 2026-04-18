@@ -121,4 +121,4 @@ class StockService:
         return StockResponse(product_id=clean_id, current_stock=self._stock[clean_id])
         
         
-service = StockService()
+stock_service = StockService()
