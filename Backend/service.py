@@ -48,7 +48,7 @@ class MovementRequest(BaseModel):
         # check if type is in "in" or "out"
         normalized = value.strip().lower()
         if normalized not in {"in","out"}:
-            raise ValueError("type must be either 'in; or 'out'")\
+            raise ValueError("type must be either 'in' or 'out'")
         return normalized
       
 # This is for structuring a response
