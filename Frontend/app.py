@@ -158,7 +158,7 @@ with left_col:
             st.error(exc.detail)
         except ValidationError as exc:
             err = exc.errors()[0]
-            st.error(err)
+            st.error(err["msg"])
         except Exception as exc:
             st.error(f"Unexpected error: {exc}")
 
