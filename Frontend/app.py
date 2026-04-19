@@ -21,8 +21,8 @@ def set_bg(img_path):
         <style>
         .stApp {{
             background: linear-gradient(
-                    rgba(255, 255, 255, 0.45),
-                    rgba(255, 255, 255, 0.45)
+                    rgba(255, 255, 255, 0.42),
+                    rgba(255, 255, 255, 0.42)
                 ),
                 url("data:image/png;base64,{encoded}");
             background-size: cover;
@@ -45,12 +45,11 @@ st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
 
 st.title("StockFlow")
-st.caption("Tiny stock management demo")
 
 left_col, right_col = st.columns(2)
 
 with left_col:
-    st.subheader("Register movement")
+    st.subheader("Register stock")
 
     with st.form("movement_form"):
         movement_product_id = st.text_input("Product ID", placeholder="ABC123")
