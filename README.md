@@ -59,12 +59,10 @@ The backend uses an in-memory dictionary (`product_id -> current_stock`) and a r
 
 For movement registration:
 - `product_id`
-  - Required, trimmed, non-empty
-  - Alphanumeric only
+  - Required, must be non-empty
+  - Letters & Numbers only, spaces in between are not allowed
   - Maximum length: 30
 - `quantity`
-  - integer only
-  - range: `1` to `1_000_000`
   - Integer only
   - Range: 1 to 1,000,000
 - `type`
