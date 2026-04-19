@@ -196,7 +196,7 @@ with left_col:
             submit_movement = st.form_submit_button("register")
         with btn_col2:
             reset_movement = st.form_submit_button(
-                "reset register",
+                "reset",
                 on_click=reset_movement_form,
             )
 
@@ -240,9 +240,15 @@ with right_col:
             placeholder="ABC123",
             key="stock_product_id",
         )
-        check_inventory = st.form_submit_button("check")
 
-    st.button("reset check", on_click=reset_inventory_form)
+        btn_col1, btn_col2 = st.columns([1, 1])
+        with btn_col1:
+            check_inventory = st.form_submit_button("check")
+        with btn_col2:
+            reset_inventory = st.form_submit_button(
+                "reset",
+                on_click=reset_inventory_form,
+            )
 
     if check_inventory:
         try:
