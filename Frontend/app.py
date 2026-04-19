@@ -81,12 +81,23 @@ def set_bg(img_path):
             margin-bottom: 0.8rem;
         }}
 
-        div[data-testid="stAlert"] {{
-            border-radius: 12px !important;
-            
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            background-color: rgba(212, 237, 218, 1) !important;
-        }}
+        /* SUCCESS */
+        div[data-testid="stAlert"][kind="success"] {
+            background-color: #d4edda !important;
+            color: #155724 !important;
+        }
+
+        /* ERROR */
+        div[data-testid="stAlert"][kind="error"] {
+           background-color: #f8d7da !important;
+           color: #721c24 !important;
+        }
+
+        /* Shared styling */
+        div[data-testid="stAlert"] {
+           border-radius: 12px !important;
+           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
         </style>
         """,
         unsafe_allow_html=True,
