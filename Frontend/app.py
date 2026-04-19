@@ -84,6 +84,19 @@ def set_bg(img_path):
             margin-bottom: 0.8rem;
         }}
 
+        /* Solid alert boxes */
+        div[data-testid="stAlert"] {{
+            background: rgb(254, 242, 242) !important;
+            border: 1px solid rgb(248, 113, 113) !important;
+            border-radius: 12px !important;
+            opacity: 1 !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }}
+
+        div[data-testid="stAlert"] p {{
+            color: rgb(127, 29, 29) !important;
+            font-weight: 500;
+        }}
         </style>
         """,
         unsafe_allow_html=True)
@@ -157,7 +170,7 @@ with left_col:
         except HTTPException as exc:
             st.error(exc.detail)
         except ValidationError as exc:
-            err = exc.errors()[0]["msg"].replace("Value error,","")
+            err = exc.errors()[0]["msg"].replace("Value error,", "").strip()
             st.error(err)
         except Exception as exc:
             st.error(f"Unexpected error: {exc}")
