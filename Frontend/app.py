@@ -157,8 +157,8 @@ with left_col:
         except HTTPException as exc:
             st.error(exc.detail)
         except ValidationError as exc:
-            err = exc.errors()[0].replace("Value error,","")
-            st.error(err["msg"])
+            err = exc.errors()[0]["msg"].replace("Value error,","")
+            st.error(err)
         except Exception as exc:
             st.error(f"Unexpected error: {exc}")
 
