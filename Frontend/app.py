@@ -10,7 +10,7 @@ sys.path.append(str(ROOT_DIR))
 from Backend.service import MovementRequest, stock_service
 
 
-st.set_page_config(page_title="StockFlow Demo", page_icon="📦", layout="centered")
+st.set_page_config(page_title="StockFlow Demo", layout="centered")
 
 st.title("📦 StockFlow")
 st.caption("Tiny stock management demo")
