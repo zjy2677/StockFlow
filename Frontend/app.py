@@ -90,6 +90,17 @@ def set_bg(img_path):
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
 
+# Notes for users
+with st.sidebar:
+    st.header("Notes for Users")
+    st.markdown(
+        """
+        - Register incoming/outgoing stock  
+        - Check inventory before shipment  
+        - Ensure Product ID is correct  
+        """
+    )
+    
 st.title("StockFlow")
 
 left_col, right_col = st.columns(2)
