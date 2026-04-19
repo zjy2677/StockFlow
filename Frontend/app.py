@@ -92,12 +92,12 @@ set_bg(IMG_PATH)
 
 # Notes for users
 with st.sidebar:
-    st.header("Notes for Users")
+    st.header("User's Guide and Test Cases")
     st.markdown(
         """
-        - Register incoming/outgoing stock  
-        - Check inventory before shipment  
-        - Ensure Product ID is correct  
+        - Product ID only accepts a-z and 0-9 with 1 < len < 30   
+        - Quantity only accepts integer between 0 - 1000000 
+        - Type can only be "in" and "out" 
         """
     )
     
