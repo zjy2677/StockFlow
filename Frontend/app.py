@@ -21,7 +21,7 @@ def set_bg(img_path):
         <style>
         .stApp {{
             background: linear-gradient(
-                    rgba(120, 110, 90, 0.09),
+                    rgba(255, 255, 255, 0.28),
                     rgba(255, 255, 255, 0.32)
                 ),
                 url("data:image/png;base64,{encoded}");
