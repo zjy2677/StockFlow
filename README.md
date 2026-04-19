@@ -1,119 +1,151 @@
-# StockFlow API
+# StockFlow
 
-## Overview
+## What It Does and Why It Matters
 
-StockFlow is a simple backend service designed for registering stock movements and checking inventory for an imaginary company.
+Inventory mistakes are expensive, especially in fast-moving operations where teams need to register product movements quickly and still trust the numbers they see. When stock records are inconsistent or delayed, teams over-order, miss fulfillments, or lose time reconciling data manually.
 
-It solves a common inventory-tracking problem for technical test scenarios:
-- record incoming (`in`) and outgoing (`out`) stock movements
-- validate inputs at the API boundary
-- enforce stock consistency rules (no negative inventory)
-- expose current stock by `product_id`
+StockFlow was built to address this gap with a clean, practical prototype: **register inbound/outbound movements with strict validation, enforce non-negative stock rules, and retrieve current inventory instantly for a given product**. The goal is clarity over complexity — a transparent workflow that is easy to test, reason about, and extend.
 
-High-level functionality:
-- `POST /movements`: register a stock movement
-- `GET /products/{product_id}/stock`: return current stock for a product
+## Product Overview
 
-## Project Structure
+StockFlow includes both a backend API and a lightweight Streamlit interface.
 
-- `Backend/main.py`
-  - FastAPI app setup
-  - route definitions
-  - API-to-service orchestration
-- `Backend/service.py`
-  - Pydantic schemas
-  - validation helpers
-  - business logic service (`StockService`)
-  - in-memory stock state
-- `Frontend/app.py`
-  - Streamlit demo app for interaction testing
-- `requirements.txt`
-  - project dependencies
+- The **backend** (FastAPI) exposes two core endpoints:
+  - `POST /movements` to register stock in/out events
+  - `GET /products/{product_id}/stock` to retrieve current stock
+- The **frontend** (Streamlit) provides two side-by-side forms:
+  - **Stock Register** for movement submission
+  - **Inventory Checker** for stock lookup
+- A sidebar user guide explains input rules and expected behavior.
 
+The system enforces validation at request time and at business-rule level, then returns explicit success/error responses so users know exactly what happened.
 
-## Key Design Decisions
+## Architecture Overview
 
-- **Separation of API and business logic**
-  - Endpoints in `main.py` remain thin.
-  - Inventory rules and state changes are centralized in `StockService`.
-- **Input validation strategy**
-  - Pydantic handles schema-level constraints (type, required fields, ranges).
-  - A dedicated `product_id` validator enforces formatting and sanitization.
-- **Error handling approach**
-  - Domain and validation issues are surfaced with explicit HTTP errors (`400`, `404`, `422`).
-  - Responses are structured and predictable for both API and UI consumers.
-- **Simplicity over overengineering**
-  - In-memory storage and minimal layers are intentional for assignment scope.
-  - Design choices favor clarity and correctness over production-grade infrastructure.
+We separated the repository into these parts:
 
-## Validation and Error Handling
+1. **Backend/**
+   - `main.py`: FastAPI app and route definitions.
+   - `service.py`: Validation helpers, request/response schemas, and stock business logic.
+   - `__init__.py`: Package marker.
 
-Validation rules currently include:
+2. **Frontend/**
+   - `app.py`: Streamlit UI with forms, session-state feedback, and background styling.
+   - `photo/background_img.png`: UI background asset.
+
+3. **requirements.txt**
+   - Python dependencies for backend and frontend runtime.
+
+```text
+├── Backend/
+│   ├── __init__.py
+│   ├── main.py
+│   └── service.py
+│
+├── Frontend/
+│   ├── app.py
+│   └── photo/
+│       └── background_img.png
+│
+├── requirements.txt
+└── README.md
+```
+
+## Backend Logic
+
+The backend uses an in-memory dictionary (`product_id -> current_stock`) and a rule-based flow.
+
+### 1) Input Validation
+
+For movement registration:
 - `product_id`
-  - required, trimmed, non-empty
-  - max length: 30
-  - alphanumeric only (no spaces or special characters)
+  - Required, trimmed, non-empty
+  - Alphanumeric only
+  - Maximum length: 30
 - `quantity`
   - integer only
   - range: `1` to `1_000_000`
+  - Integer only
+  - Range: 1 to 1,000,000
 - `type`
-  - must be `in` or `out` (case-insensitive normalization)
+  - Must be `in` or `out` (normalized case-insensitively)
+For stock lookup:
+- `product_id` is validated with the same shared validator.
 
-Error handling behavior:
-- invalid payload or path input → `422 Unprocessable Entity`
-- outgoing movement for unknown product → `404 Not Found`
-- outgoing movement that would create negative stock → `400 Bad Request`
-- stock query for unknown product → `404 Not Found`
+### 2) Movement Registration Logic (`POST /movements`)
 
-## Running the Project
+For each request (`product_id`, `quantity`, `type`):
 
-### Option 1 — Hosted Demo
+1. Validate payload via Pydantic + custom validator.
+2. If `type == in`, increase current stock (default starts from 0).
+3. If `type == out`:
+   - Reject unknown product IDs (`404`).
+   - Reject operations that would create negative stock (`400`).
+4. Return success response with updated `current_stock`.
 
-Streamlit demo: **`<[StockFlow](https://stockflow-dashboard.streamlit.app/)>`**
+### 3) Stock Retrieval Logic (`GET /products/{product_id}/stock`)
 
-You can use the demo to:
-- register `in`/`out` stock movements
-- validate input rules through the UI
-- check current inventory for an existing product
+1. Validate `product_id` format.
+2. Reject unknown products (`404`).
+3. Return `product_id` and current stock value.
 
-### Option 2 — Run Locally
+## How to Run (Local)
 
-1. Install dependencies:
+### 1. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Start the API server:
+### 2. Start the backend API
 
 ```bash
 uvicorn Backend.main:app --reload
 ```
 
-3. Open API docs:
+### 3. Open backend docs (You can test here)
+
 - Swagger UI: `http://127.0.0.1:8000/docs`
 
-
-4. (Optional) Start the Streamlit demo in a second terminal:
+### 4. Start the frontend app (optional)
 
 ```bash
 streamlit run Frontend/app.py
 ```
 
-## Future Improvements
+## Access the Application
 
-Current scope is intentionally simple and not production-ready.
+- Frontend (local): `http://localhost:8501`
+- Backend API (local): `http://localhost:8000`
+- Hosted Streamlit demo: `https://stockflow-dashboard.streamlit.app/`
 
-Known limitations:
-- no persistent storage (in-memory state only)
-- no caching layer
-- no authentication/authorization
-- no load balancing or horizontal scaling setup
-- no containerization (Docker)
+## Known Limitations
 
-Reasonable next steps:
-- add database persistence and migration strategy
-- introduce unit/integration tests with CI checks
-- add auth and request-rate protection
-- package with Docker for consistent environments
-- evolve service design for multi-instance deployments
+- **State is in-memory only**. Stock data resets whenever the backend process restarts.
+
+
+## What is Not Delievered
+
+To be transparent for future maintainers:
+
+- **No persistent storage layer** (e.g., PostgreSQL/Redis).
+- **No movement history/audit trail endpoint** — only latest stock state is stored.
+- **No production deployment package** (Docker/Kubernetes) in the current repository.
+- **No role-based access control** for movement registration or stock visibility.
+
+## What Could Be Done in the Future
+
+- **Backend**
+  - Add persistent storage with transaction-safe updates.
+  - Add movement history logs and filtering endpoints.
+  - Add test coverage (unit + API integration) and CI checks.
+  - Introduce auth, authorization, and request throttling.
+
+- **Frontend**
+  - Connect Streamlit UI to the API over HTTP in all paths (instead of in-process service imports).
+  - Add dashboards for stock trends and movement analytics.
+  - Improve operator workflows (bulk upload, CSV import, and undo guardrails).
+
+- **Platform/DevOps**
+  - Add Dockerfiles + compose setup for reproducible local environments.
+  - Add structured logging and monitoring hooks for observability.
