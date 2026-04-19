@@ -95,7 +95,7 @@ st.title("StockFlow")
 left_col, right_col = st.columns(2)
 
 with left_col:
-    st.subheader("Register stock")
+    st.subheader("Stock Register")
 
     with st.form("movement_form"):
         movement_product_id = st.text_input("Product ID", placeholder="ABC123")
@@ -112,8 +112,8 @@ with left_col:
             )
             result = stock_service.register_movement(movement)
             st.success(
-                f"Movement saved for {result.product_id}. Current stock: {result.current_stock}"
-            )
+                f"Movement saved for {result.product_id}. Current stock of {result.product_id} has been updated to {result.current_stock}."
+            ).
         except HTTPException as exc:
             st.error(exc.detail)
         except ValueError as exc:
@@ -122,7 +122,7 @@ with left_col:
             st.error(f"Unexpected error: {exc}")
 
 with right_col:
-    st.subheader("Check inventory")
+    st.subheader("Inventory Checker")
 
     with st.form("inventory_form"):
         stock_product_id = st.text_input("Product ID to check", placeholder="ABC123")
