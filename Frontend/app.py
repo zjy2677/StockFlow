@@ -40,7 +40,7 @@ def set_bg(img_path):
         }}
         </style>
         """,
-        unsafe_allow_html=True
+        unsafe_allow_html=True)
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
