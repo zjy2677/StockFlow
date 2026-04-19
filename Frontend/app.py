@@ -31,15 +31,61 @@ def set_bg(img_path):
             background-attachment: fixed;
         }}
 
+        /* Main container */
         .main .block-container {{
             background: rgba(255, 255, 255, 1);
             padding: 2rem 2.5rem;
             border-radius: 18px;
         }}
+
+        /* ---- FONT SYSTEM ---- */
+        html, body, [class*="css"] {{
+            font-size: 17px;
+        }}
+
+        h1 {{
+            font-size: 42px !important;
+            font-weight: 700;
+        }}
+
+        h2, h3 {{
+            font-size: 24px !important;
+            font-weight: 600;
+        }}
+
+        label {{
+            font-size: 16px !important;
+            font-weight: 500;
+        }}
+
+        input, textarea {{
+            font-size: 16px !important;
+        }}
+
+        button {{
+            font-size: 16px !important;
+            padding: 0.5rem 1rem;
+        }}
+
+        /* ---- FORM CARDS (KEY FIX) ---- */
+        div[data-testid="stForm"] {{
+            background: rgba(255, 255, 255, 0.96);
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0,0,0,0.12);
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }}
+
+        /* Inputs spacing */
+        div[data-testid="stForm"] .stTextInput,
+        div[data-testid="stForm"] .stNumberInput,
+        div[data-testid="stForm"] .stSelectbox {{
+            margin-bottom: 0.8rem;
+        }}
+
         </style>
         """,
         unsafe_allow_html=True)
-
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
