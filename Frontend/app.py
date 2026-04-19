@@ -40,7 +40,7 @@ def set_bg(img_path):
 
         /* ---- FONT SYSTEM ---- */
         html, body, [class*="css"] {{
-            font-size: 20px;
+            font-size: 18px;
         }}
 
         h1 {{
@@ -54,16 +54,16 @@ def set_bg(img_path):
         }}
 
         label {{
-            font-size: 20px !important;
-            font-weight: 500;
+            font-size: 18px !important;
+            font-weight: 600;
         }}
 
         input, textarea {{
-            font-size: 16px !important;
+            font-size: 18px !important;
         }}
 
         button {{
-            font-size: 16px !important;
+            font-size: 14px !important;
             padding: 0.5rem 1rem;
         }}
 
