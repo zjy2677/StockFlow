@@ -22,7 +22,7 @@ The system enforces validation at request time and at business-rule level, then 
 
 ## Architecture Overview
 
-We separated the repository into these parts:
+The repository is seperated into these parts:
 
 1. **Backend/**
    - `main.py`: FastAPI app and route definitions.
