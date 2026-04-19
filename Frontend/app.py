@@ -69,7 +69,7 @@ def set_bg(img_path):
 
         /* ---- FORM CARDS (KEY FIX) ---- */
         div[data-testid="stForm"] {{
-            background: rgba(255, 255, 255, 0.96);
+            background: rgba(255, 255, 255, 0.8);
             padding: 1.5rem;
             border-radius: 16px;
             border: 1px solid rgba(0,0,0,0.12);
