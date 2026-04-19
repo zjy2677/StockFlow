@@ -3,14 +3,35 @@ import sys
 from pathlib import Path
 import streamlit as st
 from fastapi import HTTPException
+import base64
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
 from Backend.service import MovementRequest, stock_service
 
+IMG_PATH = RPPT_DIR / "Frontend" / "photo" / "background_img.png"
+
+def set_bg(img_path):
+    with open(img_path, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/png;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )    
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
+set_bg(IMG_PATH)
 
 st.title("StockFlow")
 st.caption("Tiny stock management demo")
