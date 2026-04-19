@@ -160,7 +160,7 @@ with left_col:
             )
             result = stock_service.register_movement(movement)
             st.success(
-                f"Movement saved for {result.product_id}. Current stock of {result.product_id} has been updated to {result.current_stock}."
+                f"{result.message}. Current stock of {result.product_id} has been updated to {result.current_stock}."
             )
         except HTTPException as exc:
             st.error(exc.detail)
