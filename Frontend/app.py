@@ -92,16 +92,42 @@ set_bg(IMG_PATH)
 
 # Notes for users
 with st.sidebar:
-    st.header("User's Guide and Test Cases")
-    st.markdown(
-        """
-        - Product ID only accepts a-z and 0-9 with 1 < len < 30   
-        - Quantity only accepts integer between 0 - 1000000 
-        - Type can only be "in" and "out" 
-        - A product has to be registered for it to be searched 
+    st.header("User's Guide")
 
-        """
-    )
+    st.markdown("""
+### Register Stock
+- Enter a valid **Product ID**
+- Specify **Quantity**
+- Choose movement type: **in** (add) or **out** (remove)
+- Click **Submit movement**
+
+### Check Inventory
+- Enter an existing **Product ID**
+- Click **Check stock**
+
+---
+
+### Input Rules
+- **Product ID**
+  - Only lowercase letters (`a–z`) and numbers (`0–9`)
+  - Length: 1–30 characters
+- **Quantity**
+  - Integer only
+  - Range: 1 to 1,000,000
+- **Type**
+  - Must be `"in"` or `"out"`
+- Products must be **registered before checking inventory**
+
+---
+
+### Validation Coverage
+This app includes structured validation logic to handle:
+- Invalid characters
+- Whitespace-only inputs
+- Mixed invalid formats (characters + spaces)
+
+Errors are handled gracefully with user-friendly feedback.
+""")
     
 st.title("StockFlow")
 
