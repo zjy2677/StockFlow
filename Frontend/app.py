@@ -32,7 +32,7 @@ def set_bg(img_path):
         }}
 
         .main .block-container {{
-            background: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.45);
             padding: 2rem 2.5rem;
             border-radius: 18px;
             backdrop-filter: blur(2px);
