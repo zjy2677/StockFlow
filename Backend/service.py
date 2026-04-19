@@ -31,8 +31,8 @@ def id_value_checker(value: str) -> str:
 class MovementRequest(BaseModel):
     # No default set to product_id but it has to conatin at least 1 character and at most 30 characters
     product_id: str = Field(...,min_length=1,max_length=30)
-    # No default set to quantity but it has to be greater than or equal to 0
-    quantity: int = Field(...,ge=0, le=1_000_000)
+    # No default set to quantity but it has to be greater than or equal to 1
+    quantity: int = Field(...,ge=1, le=1_000_000)
     # "type" is either in/out defined as string 
     type: str
 
