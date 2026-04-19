@@ -15,20 +15,32 @@ IMG_PATH = ROOT_DIR / "Frontend" / "photo" / "background_img.png"
 def set_bg(img_path):
     with open(img_path, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
+
     st.markdown(
         f"""
         <style>
         .stApp {{
-            background-image: url("data:image/png;base64,{encoded}");
+            background: linear-gradient(
+                    rgba(255, 255, 255, 0.72),
+                    rgba(255, 255, 255, 0.72)
+                ),
+                url("data:image/png;base64,{encoded}");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
         }}
+
+        .main .block-container {{
+            background: rgba(255, 255, 255, 0.82);
+            padding: 2rem 2.5rem;
+            border-radius: 18px;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }}
         </style>
         """,
         unsafe_allow_html=True
-    )    
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
