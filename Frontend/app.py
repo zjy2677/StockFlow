@@ -98,7 +98,7 @@ set_bg(IMG_PATH)
 # ---- Session state init ----
 defaults = {
     "movement_product_id": "",
-    "movement_quantity": 0,
+    "movement_quantity": 1,
     "movement_type": "in",
     "movement_message": None,
     "movement_message_type": None,
@@ -114,7 +114,7 @@ for key, value in defaults.items():
 
 def reset_movement_form():
     st.session_state["movement_product_id"] = ""
-    st.session_state["movement_quantity"] = 0
+    st.session_state["movement_quantity"] = 1
     st.session_state["movement_type"] = "in"
     st.session_state["movement_message"] = None
     st.session_state["movement_message_type"] = None
@@ -181,7 +181,7 @@ with left_col:
         )
         movement_quantity = st.number_input(
             "Quantity",
-            min_value=0,
+            min_value=1,
             step=1,
             key="movement_quantity",
         )
