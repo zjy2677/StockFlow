@@ -10,7 +10,7 @@ sys.path.append(str(ROOT_DIR))
 
 from Backend.service import MovementRequest, stock_service
 
-IMG_PATH = RPPT_DIR / "Frontend" / "photo" / "background_img.png"
+IMG_PATH = ROOT_DIR / "Frontend" / "photo" / "background_img.png"
 
 def set_bg(img_path):
     with open(img_path, "rb") as f:
