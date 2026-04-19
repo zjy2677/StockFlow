@@ -191,7 +191,7 @@ with left_col:
             key="movement_type",
         )
 
-        btn_col1, btn_col2 = st.columns([1, 1])
+        btn_col1, spacer, btn_col2 = st.columns([1, 2, 1])
         with btn_col1:
             submit_movement = st.form_submit_button("register")
         with btn_col2:
