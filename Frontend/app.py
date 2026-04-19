@@ -40,7 +40,7 @@ def set_bg(img_path):
 
         /* ---- FONT SYSTEM ---- */
         html, body, [class*="css"] {{
-            font-size: 17px;
+            font-size: 22px;
         }}
 
         h1 {{
