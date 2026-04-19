@@ -83,8 +83,9 @@ def set_bg(img_path):
 
         div[data-testid="stAlert"] {{
             border-radius: 12px !important;
-            opacity: 1 !important;
+            
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            background-color: rgba(212, 237, 218, 1) !important;
         }}
         </style>
         """,
