@@ -190,9 +190,15 @@ with left_col:
             options=["in", "out"],
             key="movement_type",
         )
-        submit_movement = st.form_submit_button("register")
 
-    st.button("reset register", on_click=reset_movement_form)
+        btn_col1, btn_col2 = st.columns([1, 1])
+        with btn_col1:
+            submit_movement = st.form_submit_button("register")
+        with btn_col2:
+            reset_movement = st.form_submit_button(
+                "reset register",
+                on_click=reset_movement_form,
+            )
 
     if submit_movement:
         try:
