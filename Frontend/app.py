@@ -54,16 +54,16 @@ def set_bg(img_path):
         }}
 
         label {{
-            font-size: 18px !important;
+            font-size: 20px !important;
             font-weight: 500;
         }}
 
         input, textarea {{
-            font-size: 18px !important;
+            font-size: 16px !important;
         }}
 
         button {{
-            font-size: 18px !important;
+            font-size: 16px !important;
             padding: 0.5rem 1rem;
         }}
 
