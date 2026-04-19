@@ -13,6 +13,7 @@ from Backend.service import MovementRequest, stock_service
 
 IMG_PATH = ROOT_DIR / "Frontend" / "photo" / "background_img.png"
 
+
 def set_bg(img_path):
     with open(img_path, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
@@ -90,13 +91,45 @@ def set_bg(img_path):
             opacity: 1 !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }}
-
         </style>
         """,
-        unsafe_allow_html=True)
+        unsafe_allow_html=True,
+    )
+
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
+
+# ---- Session state init ----
+defaults = {
+    "movement_product_id": "",
+    "movement_quantity": 0,
+    "movement_type": "in",
+    "movement_message": None,
+    "movement_message_type": None,
+    "stock_product_id": "",
+    "stock_message": None,
+    "stock_message_type": None,
+}
+
+for key, value in defaults.items():
+    if key not in st.session_state:
+        st.session_state[key] = value
+
+
+def reset_movement_form():
+    st.session_state.movement_product_id = ""
+    st.session_state.movement_quantity = 0
+    st.session_state.movement_type = "in"
+    st.session_state.movement_message = None
+    st.session_state.movement_message_type = None
+
+
+def reset_inventory_form():
+    st.session_state.stock_product_id = ""
+    st.session_state.stock_message = None
+    st.session_state.stock_message_type = None
+
 
 # Sidebar
 with st.sidebar:
@@ -146,10 +179,29 @@ with left_col:
     st.subheader("Stock Register")
 
     with st.form("movement_form"):
-        movement_product_id = st.text_input("Product ID", placeholder="ABC123")
-        movement_quantity = st.number_input("Quantity", min_value=0, step=1, value=0)
-        movement_type = st.selectbox("Type", options=["in", "out"])
+        movement_product_id = st.text_input(
+            "Product ID",
+            placeholder="ABC123",
+            key="movement_product_id",
+        )
+        movement_quantity = st.number_input(
+            "Quantity",
+            min_value=0,
+            step=1,
+            key="movement_quantity",
+        )
+        movement_type = st.selectbox(
+            "Type",
+            options=["in", "out"],
+            key="movement_type",
+        )
         submit_movement = st.form_submit_button("register")
+
+    reset_left = st.button("reset register")
+
+    if reset_left:
+        reset_movement_form()
+        st.rerun()
 
     if submit_movement:
         try:
@@ -159,34 +211,65 @@ with left_col:
                 type=movement_type,
             )
             result = stock_service.register_movement(movement)
-            st.success(
-                f"{result.message}. Current stock of {result.product_id} has been updated to {result.current_stock}."
+            st.session_state.movement_message = (
+                f"{result.message}. Current stock of {result.product_id} "
+                f"has been updated to {result.current_stock}."
             )
+            st.session_state.movement_message_type = "success"
         except HTTPException as exc:
-            st.error(exc.detail)
+            st.session_state.movement_message = exc.detail
+            st.session_state.movement_message_type = "error"
         except ValidationError as exc:
             err = exc.errors()[0]["msg"].replace("Value error,", "").strip()
-            st.error(err)
+            st.session_state.movement_message = err
+            st.session_state.movement_message_type = "error"
         except Exception as exc:
-            st.error(f"Unexpected error: {exc}")
+            st.session_state.movement_message = f"Unexpected error: {exc}"
+            st.session_state.movement_message_type = "error"
+
+    if st.session_state.movement_message:
+        if st.session_state.movement_message_type == "success":
+            st.success(st.session_state.movement_message)
+        else:
+            st.error(st.session_state.movement_message)
 
 # RIGHT: Check
 with right_col:
     st.subheader("Inventory Checker")
 
     with st.form("inventory_form"):
-        stock_product_id = st.text_input("Product ID to check", placeholder="ABC123")
+        stock_product_id = st.text_input(
+            "Product ID to check",
+            placeholder="ABC123",
+            key="stock_product_id",
+        )
         check_inventory = st.form_submit_button("check")
+
+    reset_right = st.button("reset check")
+
+    if reset_right:
+        reset_inventory_form()
+        st.rerun()
 
     if check_inventory:
         try:
             result = stock_service.get_stock(stock_product_id)
-            st.success(
+            st.session_state.stock_message = (
                 f"Current stock for {result.product_id}: {result.current_stock}"
             )
+            st.session_state.stock_message_type = "success"
         except HTTPException as exc:
-            st.error(exc.detail)
+            st.session_state.stock_message = exc.detail
+            st.session_state.stock_message_type = "error"
         except ValueError as exc:
-            st.error(str(exc))
+            st.session_state.stock_message = str(exc)
+            st.session_state.stock_message_type = "error"
         except Exception as exc:
-            st.error(f"Unexpected error: {exc}")
+            st.session_state.stock_message = f"Unexpected error: {exc}"
+            st.session_state.stock_message_type = "error"
+
+    if st.session_state.stock_message:
+        if st.session_state.stock_message_type == "success":
+            st.success(st.session_state.stock_message)
+        else:
+            st.error(st.session_state.stock_message)
