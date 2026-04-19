@@ -100,7 +100,7 @@ pip install -r requirements.txt
 ### 2. Start the backend API
 
 ```bash
-uvicorn Backend.main:app --reload
+python -m uvicorn Backend.main:app --reload
 ```
 
 ### 3. Open backend docs (You can test here)
