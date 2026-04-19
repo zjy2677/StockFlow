@@ -126,12 +126,8 @@ streamlit run Frontend/app.py
 
 To be transparent for future maintainers:
 
-- **No persistent storage layer** (e.g., PostgreSQL/Redis).
+- **No persistent storage layer** (e.g., PostgreSQL).
 - **No movement history/audit trail endpoint** — only latest stock state is stored.
 
-## What Could Be Done in the Future
-
-- **Backend**
-  - Add persistent storage with transaction-safe updates.
-  - Add movement history logs and filtering endpoints.
-
+So in the future I could try to connect to postgre sql and add persistent storage with transaction-safe updates
+as well as adding a log feature
