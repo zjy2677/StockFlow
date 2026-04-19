@@ -114,7 +114,7 @@ with left_col:
         movement_product_id = st.text_input("Product ID", placeholder="ABC123")
         movement_quantity = st.number_input("Quantity", min_value=0, step=1, value=0)
         movement_type = st.selectbox("Type", options=["in", "out"])
-        submit_movement = st.form_submit_button("Submit movement")
+        submit_movement = st.form_submit_button("register")
 
     if submit_movement:
         try:
@@ -139,7 +139,7 @@ with right_col:
 
     with st.form("inventory_form"):
         stock_product_id = st.text_input("Product ID to check", placeholder="ABC123")
-        check_inventory = st.form_submit_button("Check stock")
+        check_inventory = st.form_submit_button("check")
 
     if check_inventory:
         try:
