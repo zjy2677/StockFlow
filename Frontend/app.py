@@ -98,6 +98,8 @@ with st.sidebar:
         - Product ID only accepts a-z and 0-9 with 1 < len < 30   
         - Quantity only accepts integer between 0 - 1000000 
         - Type can only be "in" and "out" 
+        - A product has to be registered for it to be searched 
+
         """
     )
     
