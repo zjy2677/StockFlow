@@ -68,7 +68,7 @@ def set_bg(img_path):
             padding: 0.5rem 1rem;
         }}
 
-        /* ---- FORM CARDS (KEY FIX) ---- */
+        /* ---- FORM CARDS ---- */
         div[data-testid="stForm"] {{
             background: rgba(255, 255, 255, 0.99);
             padding: 1.5rem;
@@ -84,19 +84,13 @@ def set_bg(img_path):
             margin-bottom: 0.8rem;
         }}
 
-        /* Solid alert boxes */
+        /* ---- ALERT FIX (SOLID, KEEP DEFAULT COLORS) ---- */
         div[data-testid="stAlert"] {{
-            background: rgb(254, 242, 242) !important;
-            border: 1px solid rgb(248, 113, 113) !important;
             border-radius: 12px !important;
             opacity: 1 !important;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }}
 
-        div[data-testid="stAlert"] p {{
-            color: rgb(127, 29, 29) !important;
-            font-weight: 500;
-        }}
         </style>
         """,
         unsafe_allow_html=True)
@@ -104,7 +98,7 @@ def set_bg(img_path):
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
 
-# Notes for users
+# Sidebar
 with st.sidebar:
     st.header("User's Guide")
 
@@ -142,11 +136,12 @@ This app includes structured validation logic to handle:
 
 Errors are handled gracefully with user-friendly feedback.
 """)
-    
+
 st.title("StockFlow")
 
 left_col, right_col = st.columns(2)
 
+# LEFT: Register
 with left_col:
     st.subheader("Stock Register")
 
@@ -175,6 +170,7 @@ with left_col:
         except Exception as exc:
             st.error(f"Unexpected error: {exc}")
 
+# RIGHT: Check
 with right_col:
     st.subheader("Inventory Checker")
 
