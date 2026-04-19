@@ -130,22 +130,10 @@ To be transparent for future maintainers:
 
 - **No persistent storage layer** (e.g., PostgreSQL/Redis).
 - **No movement history/audit trail endpoint** — only latest stock state is stored.
-- **No production deployment package** (Docker/Kubernetes) in the current repository.
-- **No role-based access control** for movement registration or stock visibility.
 
 ## What Could Be Done in the Future
 
 - **Backend**
   - Add persistent storage with transaction-safe updates.
   - Add movement history logs and filtering endpoints.
-  - Add test coverage (unit + API integration) and CI checks.
-  - Introduce auth, authorization, and request throttling.
 
-- **Frontend**
-  - Connect Streamlit UI to the API over HTTP in all paths (instead of in-process service imports).
-  - Add dashboards for stock trends and movement analytics.
-  - Improve operator workflows (bulk upload, CSV import, and undo guardrails).
-
-- **Platform/DevOps**
-  - Add Dockerfiles + compose setup for reproducible local environments.
-  - Add structured logging and monitoring hooks for observability.
