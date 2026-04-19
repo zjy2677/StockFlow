@@ -21,8 +21,8 @@ def set_bg(img_path):
         <style>
         .stApp {{
             background: linear-gradient(
-                    rgba(255, 255, 255, 0.38),
-                    rgba(255, 255, 255, 0.38)
+                    rgba(255, 255, 255, 0.18),
+                    rgba(255, 255, 255, 0.10)
                 ),
                 url("data:image/png;base64,{encoded}");
             background-size: cover;
@@ -69,7 +69,7 @@ def set_bg(img_path):
 
         /* ---- FORM CARDS (KEY FIX) ---- */
         div[data-testid="stForm"] {{
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.99);
             padding: 1.5rem;
             border-radius: 16px;
             border: 1px solid rgba(0,0,0,0.12);
