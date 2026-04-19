@@ -33,14 +33,12 @@ def set_bg(img_path):
             background-attachment: fixed;
         }}
 
-        /* Main container */
         .main .block-container {{
             background: rgba(255, 255, 255, 1);
             padding: 2rem 2.5rem;
             border-radius: 18px;
         }}
 
-        /* ---- FONT SYSTEM ---- */
         html, body, [class*="css"] {{
             font-size: 18px;
         }}
@@ -69,7 +67,6 @@ def set_bg(img_path):
             padding: 0.5rem 1rem;
         }}
 
-        /* ---- FORM CARDS ---- */
         div[data-testid="stForm"] {{
             background: rgba(255, 255, 255, 0.99);
             padding: 1.5rem;
@@ -78,14 +75,12 @@ def set_bg(img_path):
             box-shadow: 0 4px 18px rgba(0,0,0,0.08);
         }}
 
-        /* Inputs spacing */
         div[data-testid="stForm"] .stTextInput,
         div[data-testid="stForm"] .stNumberInput,
         div[data-testid="stForm"] .stSelectbox {{
             margin-bottom: 0.8rem;
         }}
 
-        /* ---- ALERT FIX (SOLID, KEEP DEFAULT COLORS) ---- */
         div[data-testid="stAlert"] {{
             border-radius: 12px !important;
             opacity: 1 !important;
@@ -118,17 +113,17 @@ for key, value in defaults.items():
 
 
 def reset_movement_form():
-    st.session_state.movement_product_id = ""
-    st.session_state.movement_quantity = 0
-    st.session_state.movement_type = "in"
-    st.session_state.movement_message = None
-    st.session_state.movement_message_type = None
+    st.session_state["movement_product_id"] = ""
+    st.session_state["movement_quantity"] = 0
+    st.session_state["movement_type"] = "in"
+    st.session_state["movement_message"] = None
+    st.session_state["movement_message_type"] = None
 
 
 def reset_inventory_form():
-    st.session_state.stock_product_id = ""
-    st.session_state.stock_message = None
-    st.session_state.stock_message_type = None
+    st.session_state["stock_product_id"] = ""
+    st.session_state["stock_message"] = None
+    st.session_state["stock_message_type"] = None
 
 
 # Sidebar
@@ -197,11 +192,7 @@ with left_col:
         )
         submit_movement = st.form_submit_button("register")
 
-    reset_left = st.button("reset register")
-
-    if reset_left:
-        reset_movement_form()
-        st.rerun()
+    st.button("reset register", on_click=reset_movement_form)
 
     if submit_movement:
         try:
@@ -211,27 +202,27 @@ with left_col:
                 type=movement_type,
             )
             result = stock_service.register_movement(movement)
-            st.session_state.movement_message = (
+            st.session_state["movement_message"] = (
                 f"{result.message}. Current stock of {result.product_id} "
                 f"has been updated to {result.current_stock}."
             )
-            st.session_state.movement_message_type = "success"
+            st.session_state["movement_message_type"] = "success"
         except HTTPException as exc:
-            st.session_state.movement_message = exc.detail
-            st.session_state.movement_message_type = "error"
+            st.session_state["movement_message"] = exc.detail
+            st.session_state["movement_message_type"] = "error"
         except ValidationError as exc:
             err = exc.errors()[0]["msg"].replace("Value error,", "").strip()
-            st.session_state.movement_message = err
-            st.session_state.movement_message_type = "error"
+            st.session_state["movement_message"] = err
+            st.session_state["movement_message_type"] = "error"
         except Exception as exc:
-            st.session_state.movement_message = f"Unexpected error: {exc}"
-            st.session_state.movement_message_type = "error"
+            st.session_state["movement_message"] = f"Unexpected error: {exc}"
+            st.session_state["movement_message_type"] = "error"
 
-    if st.session_state.movement_message:
-        if st.session_state.movement_message_type == "success":
-            st.success(st.session_state.movement_message)
+    if st.session_state["movement_message"]:
+        if st.session_state["movement_message_type"] == "success":
+            st.success(st.session_state["movement_message"])
         else:
-            st.error(st.session_state.movement_message)
+            st.error(st.session_state["movement_message"])
 
 # RIGHT: Check
 with right_col:
@@ -245,31 +236,27 @@ with right_col:
         )
         check_inventory = st.form_submit_button("check")
 
-    reset_right = st.button("reset check")
-
-    if reset_right:
-        reset_inventory_form()
-        st.rerun()
+    st.button("reset check", on_click=reset_inventory_form)
 
     if check_inventory:
         try:
             result = stock_service.get_stock(stock_product_id)
-            st.session_state.stock_message = (
+            st.session_state["stock_message"] = (
                 f"Current stock for {result.product_id}: {result.current_stock}"
             )
-            st.session_state.stock_message_type = "success"
+            st.session_state["stock_message_type"] = "success"
         except HTTPException as exc:
-            st.session_state.stock_message = exc.detail
-            st.session_state.stock_message_type = "error"
+            st.session_state["stock_message"] = exc.detail
+            st.session_state["stock_message_type"] = "error"
         except ValueError as exc:
-            st.session_state.stock_message = str(exc)
-            st.session_state.stock_message_type = "error"
+            st.session_state["stock_message"] = str(exc)
+            st.session_state["stock_message_type"] = "error"
         except Exception as exc:
-            st.session_state.stock_message = f"Unexpected error: {exc}"
-            st.session_state.stock_message_type = "error"
+            st.session_state["stock_message"] = f"Unexpected error: {exc}"
+            st.session_state["stock_message_type"] = "error"
 
-    if st.session_state.stock_message:
-        if st.session_state.stock_message_type == "success":
-            st.success(st.session_state.stock_message)
+    if st.session_state["stock_message"]:
+        if st.session_state["stock_message_type"] == "success":
+            st.success(st.session_state["stock_message"])
         else:
-            st.error(st.session_state.stock_message)
+            st.error(st.session_state["stock_message"])
