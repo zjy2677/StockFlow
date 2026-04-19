@@ -54,7 +54,7 @@ def set_bg(img_path):
         }}
 
         label {{
-            font-size: 18px !important;
+            font-size: 20px !important;
             font-weight: 600;
         }}
 
