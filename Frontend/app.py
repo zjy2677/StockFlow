@@ -241,7 +241,7 @@ with right_col:
             key="stock_product_id",
         )
 
-        btn_col1, btn_col2 = st.columns([1, 1])
+        btn_col1, spacer, btn_col2 = st.columns([1, 2, 1])
         with btn_col1:
             check_inventory = st.form_submit_button("check")
         with btn_col2:
