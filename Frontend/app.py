@@ -92,7 +92,15 @@ set_bg(IMG_PATH)
 
 st.title("StockFlow")
 
-left_col, right_col = st.columns(2)
+with st.sidebar:
+    st.header("Notes")
+    notes = st.text_area(
+        "Write your notes here",
+        placeholder="Example:\n- Check low stock items\n- Verify incoming shipment\n- Contact supplier",
+        height=300,
+    )
+left_co
+l, right_col = st.columns(2)
 
 with left_col:
     st.subheader("Stock Register")
