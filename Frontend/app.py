@@ -4,6 +4,7 @@ from pathlib import Path
 import streamlit as st
 from fastapi import HTTPException
 import base64
+from pydantic import ValidationError
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
@@ -155,8 +156,9 @@ with left_col:
             )
         except HTTPException as exc:
             st.error(exc.detail)
-        except ValueError as exc:
-            st.error(str(exc))
+        except ValidationError as exc:
+            err = exc.errors()[0]
+            st.error(err)
         except Exception as exc:
             st.error(f"Unexpected error: {exc}")
 
