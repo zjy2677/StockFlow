@@ -19,10 +19,11 @@ def set_bg(img_path):
     st.markdown(
         f"""
         <style>
+        /* Background image with light overlay */
         .stApp {{
             background: linear-gradient(
-                    rgba(255, 255, 255, 0.36),
-                    rgba(255, 255, 255, 0.36)
+                    rgba(255, 255, 255, 0.32),
+                    rgba(255, 255, 255, 0.32)
                 ),
                 url("data:image/png;base64,{encoded}");
             background-size: cover;
@@ -31,16 +32,48 @@ def set_bg(img_path):
             background-attachment: fixed;
         }}
 
+        /* Remove transparent big container */
         .main .block-container {{
-            background: rgba(255, 255, 255, 0.2);
+            background: transparent;
             padding: 2rem 2.5rem;
-            border-radius: 18px;
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
+        }}
+
+        /* 👇 SOLID column cards (key improvement) */
+        [data-testid="column"] > div {{
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.12);
+        }}
+
+        /* spacing between columns */
+        [data-testid="column"] {{
+            padding: 0 0.5rem;
+        }}
+
+        /* improve input readability */
+        .stTextInput input,
+        .stNumberInput input,
+        div[data-baseweb="select"] > div {{
+            background-color: #ffffff !important;
+            color: #111827 !important;
+            border-radius: 8px !important;
+        }}
+
+        /* buttons */
+        .stButton > button,
+        .stFormSubmitButton > button {{
+            background-color: white !important;
+            color: #1f2937 !important;
+            border: 1px solid #d1d5db !important;
+            border-radius: 8px !important;
         }}
         </style>
         """,
-        unsafe_allow_html=True)
+        unsafe_allow_html=True
+    )
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
