@@ -130,4 +130,4 @@ To be transparent for future maintainers:
 - **No movement history/audit trail endpoint** — only latest stock state is stored.
 
 So in the future I could try to connect to postgre sql and add persistent storage with transaction-safe updates
-as well as adding a log feature
+as well as adding a log feature. Besides, aspects such as API security and handling high volumes of user requests have not yet been addressed, leaving further spaces for enhancement.
