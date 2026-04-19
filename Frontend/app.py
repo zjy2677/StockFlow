@@ -12,7 +12,7 @@ from Backend.service import MovementRequest, stock_service
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 
-st.title("📦 StockFlow")
+st.title("StockFlow")
 st.caption("Tiny stock management demo")
 
 left_col, right_col = st.columns(2)
