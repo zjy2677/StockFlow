@@ -21,8 +21,8 @@ def set_bg(img_path):
         <style>
         .stApp {{
             background: linear-gradient(
-                    rgba(255, 255, 255, 0.20),
-                    rgba(255, 255, 255, 0.20)
+                    rgba(255, 255, 255, 0.36),
+                    rgba(255, 255, 255, 0.36)
                 ),
                 url("data:image/png;base64,{encoded}");
             background-size: cover;
@@ -32,42 +32,16 @@ def set_bg(img_path):
         }}
 
         .main .block-container {{
-            background: transparent;
+            background: rgba(255, 255, 255, 0.2);
             padding: 2rem 2.5rem;
-        }}
-
-        /* Make each column a fully opaque white card */
-        [data-testid="column"] > div {{
-            background: white !important;
-            padding: 1.5rem;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.10);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
-            height: 100%;
-        }}
-
-        /* Make forms inside columns transparent so the card shows cleanly */
-        div[data-testid="stForm"] {{
-            background: transparent !important;
-            border: none !important;
-            padding: 0 !important;
-        }}
-
-        /* Optional: slightly cleaner inputs/buttons */
-        .stTextInput input,
-        .stNumberInput input,
-        div[data-baseweb="select"] > div {{
-            background-color: #ffffff !important;
-        }}
-
-        .stButton > button,
-        .stFormSubmitButton > button {{
-            border-radius: 8px !important;
+            border-radius: 18px;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
         }}
         </style>
         """,
-        unsafe_allow_html=True
-    )
+        unsafe_allow_html=True)
+
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
 set_bg(IMG_PATH)
