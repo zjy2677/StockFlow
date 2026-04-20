@@ -1,11 +1,15 @@
 from __future__ import annotations
 import os
 from pathlib import Path
+
+import requests
 import streamlit as st
+
 from utilities import extract_error_message, set_bg
 
+
 ROOT_DIR = Path(__file__).resolve().parents[1]
-API_BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")from __future__ import annotations
+API_BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
 IMG_PATH = ROOT_DIR / "Frontend" / "photo" / "background_img.png"
 
 st.set_page_config(page_title="StockFlow Demo", layout="centered")
@@ -205,9 +209,6 @@ with right_col:
 
     if st.session_state["stock_message"]:
         if st.session_state["stock_message_type"] == "success":
-            st.success(st.session_state["stock_message"])
-        else:
-            st.error(st.session_state["stock_message"])
             st.success(st.session_state["stock_message"])
         else:
             st.error(st.session_state["stock_message"])
