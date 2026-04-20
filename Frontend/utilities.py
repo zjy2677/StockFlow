@@ -1,4 +1,6 @@
+from __future__ import annotations
 import requests
+import base64
 
 def extract_error_message(response: requests.Response) -> str:
     try:
