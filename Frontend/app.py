@@ -2,8 +2,6 @@ from __future__ import annotations
 import os
 from pathlib import Path
 import streamlit as st
-import requests
-import base64
 from utilities import extract_error_message, set_bg
 
 ROOT_DIR = Path(__file__).resolve().parents[1]
