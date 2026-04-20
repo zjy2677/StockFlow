@@ -1,6 +1,8 @@
 from __future__ import annotations
-import requests
 import base64
+import requests
+import streamlit as st
+
 
 def extract_error_message(response: requests.Response) -> str:
     try:
@@ -15,6 +17,7 @@ def extract_error_message(response: requests.Response) -> str:
         return str(detail)
     except Exception:
         return f"Request failed with status code {response.status_code}"
+
 
 def set_bg(img_path):
     with open(img_path, "rb") as f:
