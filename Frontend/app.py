@@ -1,15 +1,17 @@
 from __future__ import annotations
 import sys
+import os
 from pathlib import Path
 import streamlit as st
 from fastapi import HTTPException
 import base64
 from pydantic import ValidationError
 
+
 ROOT_DIR = Path(__file__).resolve().parents[1]
 sys.path.append(str(ROOT_DIR))
 
-from Backend.service import MovementRequest, stock_service
+API_BACKEND_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
 
 IMG_PATH = ROOT_DIR / "Frontend" / "photo" / "background_img.png"
 
