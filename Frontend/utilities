@@ -1,0 +1,15 @@
+import requests
+
+def extract_error_message(response: requests.Response) -> str:
+    try:
+        data = response.json()
+        detail = data.get("detail", "Unknown error")
+
+        if isinstance(detail, list) and len(detail) > 0:
+            first_error = detail[0]
+            if isinstance(first_error, dict):
+                return str(first_error.get("msg", "Validation error"))
+
+        return str(detail)
+    except Exception:
+        return f"Request failed with status code {response.status_code}"
